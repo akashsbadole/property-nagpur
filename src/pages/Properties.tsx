@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { PropertyCard } from '@/components/properties/PropertyCard';
@@ -40,6 +41,7 @@ interface Property {
 
 const PropertiesPage: React.FC = () => {
   const { user, userRole } = useAuth();
+  const navigate = useNavigate();
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
   const [viewMode, setViewMode] = useState<'grid' | 'list' | 'map'>('grid');
@@ -161,8 +163,7 @@ const PropertiesPage: React.FC = () => {
   }, [filters]);
 
   const handleViewDetails = (propertyId: string) => {
-    // Navigate to property details page
-    console.log('View property:', propertyId);
+    navigate(`/property/${propertyId}`);
   };
 
   const handleContact = (propertyId: string) => {

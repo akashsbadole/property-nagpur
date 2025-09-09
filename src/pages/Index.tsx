@@ -48,14 +48,66 @@ const Index = () => {
               <span className="text-primary block">Property</span>
             </h2>
             <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Discover premium residential and commercial properties with our comprehensive platform. 
-              Buy, sell, or rent with confidence.
+              Buy, sell or rent properties across India. Thousands of verified listings await you.
             </p>
+            
+            {/* Search Bar */}
+            <div className="bg-background border rounded-xl p-6 shadow-lg max-w-2xl mx-auto mb-8">
+              <div className="flex flex-col md:flex-row gap-4">
+                <div className="flex-1">
+                  <input
+                    type="text"
+                    placeholder="Enter city, locality or property name"
+                    className="w-full px-4 py-3 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary"
+                  />
+                </div>
+                <Button size="lg" className="bg-primary hover:bg-primary-hover px-8">
+                  <Search className="h-5 w-5 mr-2" />
+                  Search
+                </Button>
+              </div>
+            </div>
+
+            {/* Category Tiles */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto mb-8">
+              <Card className="hover:shadow-lg transition-shadow cursor-pointer border-border/50">
+                <CardContent className="p-4 text-center">
+                  <Home className="h-8 w-8 text-primary mx-auto mb-2" />
+                  <h3 className="font-semibold text-sm">Flats</h3>
+                  <p className="text-xs text-muted-foreground">Apartments</p>
+                </CardContent>
+              </Card>
+              
+              <Card className="hover:shadow-lg transition-shadow cursor-pointer border-border/50">
+                <CardContent className="p-4 text-center">
+                  <Home className="h-8 w-8 text-primary mx-auto mb-2" />
+                  <h3 className="font-semibold text-sm">Houses</h3>
+                  <p className="text-xs text-muted-foreground">Independent</p>
+                </CardContent>
+              </Card>
+              
+              <Card className="hover:shadow-lg transition-shadow cursor-pointer border-border/50">
+                <CardContent className="p-4 text-center">
+                  <Home className="h-8 w-8 text-primary mx-auto mb-2" />
+                  <h3 className="font-semibold text-sm">Commercial</h3>
+                  <p className="text-xs text-muted-foreground">Office/Shop</p>
+                </CardContent>
+              </Card>
+              
+              <Card className="hover:shadow-lg transition-shadow cursor-pointer border-border/50">
+                <CardContent className="p-4 text-center">
+                  <Home className="h-8 w-8 text-primary mx-auto mb-2" />
+                  <h3 className="font-semibold text-sm">Plots</h3>
+                  <p className="text-xs text-muted-foreground">Land</p>
+                </CardContent>
+              </Card>
+            </div>
+            
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button onClick={() => navigate('/auth')} size="lg" className="bg-primary hover:bg-primary-hover">
                 Get Started
               </Button>
-              <Button variant="outline" size="lg">
+              <Button variant="outline" size="lg" onClick={() => navigate('/properties')}>
                 Browse Properties
               </Button>
             </div>
@@ -226,7 +278,7 @@ const Index = () => {
 
         {/* Action Cards */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+          <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => navigate('/properties')}>
             <CardHeader>
               <Search className="h-8 w-8 text-primary mb-2" />
               <CardTitle>Search Properties</CardTitle>
