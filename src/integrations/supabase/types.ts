@@ -38,6 +38,173 @@ export type Database = {
         }
         Relationships: []
       }
+      broker_notifications: {
+        Row: {
+          broker_id: string
+          contact_info: Json | null
+          created_at: string | null
+          enquirer_id: string
+          id: string
+          message: string | null
+          notification_type: string
+          property_id: string
+          sent_at: string | null
+          status: string | null
+        }
+        Insert: {
+          broker_id: string
+          contact_info?: Json | null
+          created_at?: string | null
+          enquirer_id: string
+          id?: string
+          message?: string | null
+          notification_type: string
+          property_id: string
+          sent_at?: string | null
+          status?: string | null
+        }
+        Update: {
+          broker_id?: string
+          contact_info?: Json | null
+          created_at?: string | null
+          enquirer_id?: string
+          id?: string
+          message?: string | null
+          notification_type?: string
+          property_id?: string
+          sent_at?: string | null
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "broker_notifications_broker_id_fkey"
+            columns: ["broker_id"]
+            isOneToOne: false
+            referencedRelation: "brokers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "broker_notifications_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      brokers: {
+        Row: {
+          address: string | null
+          commission_rate: number | null
+          company_name: string | null
+          created_at: string | null
+          email: string
+          id: string
+          license_number: string | null
+          phone: string | null
+          rating: number | null
+          specializations: Json | null
+          total_deals: number | null
+          updated_at: string | null
+          user_id: string
+          verified: boolean | null
+        }
+        Insert: {
+          address?: string | null
+          commission_rate?: number | null
+          company_name?: string | null
+          created_at?: string | null
+          email: string
+          id?: string
+          license_number?: string | null
+          phone?: string | null
+          rating?: number | null
+          specializations?: Json | null
+          total_deals?: number | null
+          updated_at?: string | null
+          user_id: string
+          verified?: boolean | null
+        }
+        Update: {
+          address?: string | null
+          commission_rate?: number | null
+          company_name?: string | null
+          created_at?: string | null
+          email?: string
+          id?: string
+          license_number?: string | null
+          phone?: string | null
+          rating?: number | null
+          specializations?: Json | null
+          total_deals?: number | null
+          updated_at?: string | null
+          user_id?: string
+          verified?: boolean | null
+        }
+        Relationships: []
+      }
+      document_verification_requests: {
+        Row: {
+          created_at: string | null
+          document_type: string
+          documents: Json
+          id: string
+          payment_status: string | null
+          property_id: string | null
+          status: string | null
+          stripe_payment_intent_id: string | null
+          submitted_at: string | null
+          updated_at: string | null
+          user_id: string
+          verification_fee: number
+          verification_notes: string | null
+          verified_at: string | null
+          verified_by: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          document_type: string
+          documents?: Json
+          id?: string
+          payment_status?: string | null
+          property_id?: string | null
+          status?: string | null
+          stripe_payment_intent_id?: string | null
+          submitted_at?: string | null
+          updated_at?: string | null
+          user_id: string
+          verification_fee: number
+          verification_notes?: string | null
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          document_type?: string
+          documents?: Json
+          id?: string
+          payment_status?: string | null
+          property_id?: string | null
+          status?: string | null
+          stripe_payment_intent_id?: string | null
+          submitted_at?: string | null
+          updated_at?: string | null
+          user_id?: string
+          verification_fee?: number
+          verification_notes?: string | null
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "document_verification_requests_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       documents: {
         Row: {
           created_at: string
@@ -366,6 +533,8 @@ export type Database = {
           area_sqm: number | null
           bathrooms: number | null
           bhk: number | null
+          broker_commission: number | null
+          broker_id: string | null
           brokerage_percentage: number | null
           contact_email: string | null
           contact_person: string | null
@@ -419,6 +588,8 @@ export type Database = {
           area_sqm?: number | null
           bathrooms?: number | null
           bhk?: number | null
+          broker_commission?: number | null
+          broker_id?: string | null
           brokerage_percentage?: number | null
           contact_email?: string | null
           contact_person?: string | null
@@ -472,6 +643,8 @@ export type Database = {
           area_sqm?: number | null
           bathrooms?: number | null
           bhk?: number | null
+          broker_commission?: number | null
+          broker_id?: string | null
           brokerage_percentage?: number | null
           contact_email?: string | null
           contact_person?: string | null
