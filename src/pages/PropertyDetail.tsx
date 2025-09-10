@@ -11,10 +11,13 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { 
   ArrowLeft, Heart, Share2, Phone, MessageCircle, MapPin, 
   Bed, Bath, Square, Calendar, Home, Car, Wifi, Tv,
-  ChevronLeft, ChevronRight, Play, ImageIcon, Flag
+  ChevronLeft, ChevronRight, Play, ImageIcon, Flag, Shield
 } from 'lucide-react';
 import { formatPrice } from '@/lib/utils';
 import { toast } from 'sonner';
+import { BrokerRouting } from '@/components/brokers/BrokerRouting';
+import { DocumentVerification } from '@/components/verification/DocumentVerification';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 interface Property {
   id: string;
@@ -46,6 +49,9 @@ interface Property {
   contact_email?: string;
   profiles?: any;
   locations?: any;
+  broker_id?: string;
+  brokers?: any;
+  owner_id: string;
 }
 
 const PropertyDetail: React.FC = () => {
@@ -57,6 +63,8 @@ const PropertyDetail: React.FC = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isSaved, setIsSaved] = useState(false);
   const [similarProperties, setSimilarProperties] = useState<any[]>([]);
+  const [showContactForm, setShowContactForm] = useState(false);
+  const [showDocVerification, setShowDocVerification] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -73,7 +81,8 @@ const PropertyDetail: React.FC = () => {
         .select(`
           *,
           profiles:owner_id (id, full_name, phone, avatar_url, created_at),
-          locations:location_id (city, state)
+          locations:location_id (city, state),
+          brokers:broker_id (id, company_name, email, phone, verified)
         `)
         .eq('id', id)
         .single();
@@ -127,8 +136,7 @@ const PropertyDetail: React.FC = () => {
       navigate('/auth');
       return;
     }
-    // Open chat modal or navigate to chat
-    toast.success('Opening chat...');
+    setShowContactForm(true);
   };
 
   const handleCall = () => {
@@ -465,42 +473,29 @@ const PropertyDetail: React.FC = () => {
               </CardContent>
             </Card>
 
-            {/* Contact Form */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Quick Enquiry</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <label className="text-sm font-medium">Your Name</label>
-                  <input 
-                    type="text" 
-                    className="w-full mt-1 px-3 py-2 border rounded-md"
-                    placeholder="Enter your name"
-                  />
-                </div>
-                
-                <div>
-                  <label className="text-sm font-medium">Phone Number</label>
-                  <input 
-                    type="tel" 
-                    className="w-full mt-1 px-3 py-2 border rounded-md"
-                    placeholder="Enter your phone"
-                  />
-                </div>
-                
-                <div>
-                  <label className="text-sm font-medium">Message</label>
-                  <textarea 
-                    className="w-full mt-1 px-3 py-2 border rounded-md"
-                    rows={3}
-                    placeholder="I'm interested in this property..."
-                  />
-                </div>
-                
-                <Button className="w-full">Send Enquiry</Button>
-              </CardContent>
-            </Card>
+            {/* Quick Actions */}
+            {!showContactForm && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Quick Actions</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <Button onClick={handleContact} className="w-full">
+                    <MessageCircle className="h-4 w-4 mr-2" />
+                    Send Detailed Enquiry
+                  </Button>
+                  
+                  <Button 
+                    variant="outline" 
+                    className="w-full"
+                    onClick={() => setShowDocVerification(true)}
+                  >
+                    <Shield className="h-4 w-4 mr-2" />
+                    Verify Documents (₹199)
+                  </Button>
+                </CardContent>
+              </Card>
+            )}
 
             {/* Similar Properties */}
             {similarProperties.length > 0 && (
@@ -528,6 +523,34 @@ const PropertyDetail: React.FC = () => {
             )}
           </div>
         </div>
+
+        {/* Contact Form Dialog */}
+        <Dialog open={showContactForm} onOpenChange={setShowContactForm}>
+          <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>Contact Property Owner</DialogTitle>
+            </DialogHeader>
+            <BrokerRouting
+              propertyId={property.id}
+              ownerId={property.owner_id}
+              brokerId={property.broker_id}
+              onContact={() => setShowContactForm(false)}
+            />
+          </DialogContent>
+        </Dialog>
+
+        {/* Document Verification Dialog */}
+        <Dialog open={showDocVerification} onOpenChange={setShowDocVerification}>
+          <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>Document Verification Service</DialogTitle>
+            </DialogHeader>
+            <DocumentVerification
+              propertyId={property.id}
+              onSuccess={() => setShowDocVerification(false)}
+            />
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );
