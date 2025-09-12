@@ -85,7 +85,7 @@ export const AIRecommendations: React.FC = () => {
       const extractor = await pipeline(
         'feature-extraction',
         'mixedbread-ai/mxbai-embed-xsmall-v1',
-        { device: 'webgpu' }
+        { device: 'webgpu' as any }
       );
       setEmbeddingModel(extractor);
       setInitialized(true);
