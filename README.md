@@ -364,4 +364,13 @@ For support and questions:
 
 ---
 
+ ### deploy to mobile devices:
+
+- Export to GitHub and git pull
+- Run npm install
+- Add platforms: -  npx cap add ios and npx cap add android
+- Build: npm run build
+- Sync: npx cap sync
+- Run: npx cap run android or npx cap run ios
+
 Built with ❤️ using React, TypeScript, Supabase, and modern web technologies.
